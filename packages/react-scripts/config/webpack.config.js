@@ -34,6 +34,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
 // @remove-on-eject-begin
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 // @remove-on-eject-end
@@ -763,6 +764,9 @@ module.exports = function (webpackEnv) {
             }),
           },
         },
+      }),
+      new RetryChunkLoadPlugin({
+        cacheBust: `function() { return "t=" + Date.now(); }`
       }),
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
